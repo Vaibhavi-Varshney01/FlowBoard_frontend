@@ -8,12 +8,9 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_BASE_URL
-        fromService:
-          name: flowboard-gateway
-          type: web
-          property: url
+        sync: false # Set to the public URL of the gateway after deployment
       - key: VITE_CLERK_PUBLISHABLE_KEY
-        # Set manually in Render Dashboard as a secret
+        sync: false # Set manually in Render Dashboard
 
   # ─── API GATEWAY (Public Facing) ───
   - type: web
