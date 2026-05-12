@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  # ─── MAIN FRONTEND (REACT) ───
+  flowboard-frontend:
+    build:
+      context: ../FlowBoard-Frontend
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:5050/api}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    restart: always
+    depends_on:
+      - flowboard-gateway
+
+  # ─── API GATEWAY (YARP) ───
+  flowboard-gateway:
+    build: ./FlowBoard.Gateway
+    ports:
+      - "${GATEWAY_PORT:-5050}:8080"
+    volumes:
+      - ./FlowBoard.Gateway/appsettings.json:/app/appsettings.json
+    restart: always
+    depends_on:
+      flowboard-auth:
+        condition: service_started
+      flowboard-notification:
+        condition: service_started
+      flowboard-workspace:
+        condition: service_started
+      flowboard-board:
+        condition: service_started
+      flowboard-task:
+        condition: service_started
+
+  # ─── MVC WEB PORTAL ───
+  flowboard-web:
+    build: ./FlowBoard.Web
+    ports:
+      - "8081:8080"
+    restart: always
+    depends_on:
+      - postgres
+
+  # ─── MICROSERVICES ───
+  flowboard-auth:
+    build: ./FlowBoard.Auth
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_auth;Username=postgres;Password=password
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  flowboard-notification:
+    build: ./FlowBoard.Notification
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_notification;Username=postgres;Password=password
+      - RabbitMQ__Host=rabbitmq
+      - Services__TaskService=http://flowboard-task:8080/
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  flowboard-board:
+    build: ./FlowBoard.Board
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_board;Username=postgres;Password=password
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  flowboard-workspace:
+    build: ./FlowBoard.Workspace
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_workspace;Username=postgres;Password=password
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  flowboard-column:
+    build: ./FlowBoard.Column
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_column;Username=postgres;Password=password
+      - RabbitMQ__Host=rabbitmq
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  flowboard-task:
+    build: ./FlowBoard.Task
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_task;Username=postgres;Password=password
+      - RabbitMQ__Host=rabbitmq
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  flowboard-comment:
+    build: ./FlowBoard.Comment
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_comment;Username=postgres;Password=password
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  flowboard-checklist:
+    build: ./FlowBoard.Checklist
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_checklist;Username=postgres;Password=password
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ─── INFRASTRUCTURE ───
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

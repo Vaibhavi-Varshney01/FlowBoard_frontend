@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core Testing Frameworks -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="NUnit" Version="4.1.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    
+    <!-- Code Coverage & Analyzers -->
+    <PackageReference Include="NUnit.Analyzers" Version="4.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <!-- Mocking & Assertions -->
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    
+    <!-- In-Memory Database for EF Core 8 -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+  </ItemGroup>
+
+  <!-- Project References (Linking Microservices to your Test Project) -->
+  <ItemGroup>
+    <ProjectReference Include="..\FlowBoard.Auth\FlowBoard.Auth.csproj" />
+    <ProjectReference Include="..\FlowBoard.Workspace\FlowBoard.Workspace.csproj" />
+    <ProjectReference Include="..\FlowBoard.Board\FlowBoard.Board.csproj" />
+    <ProjectReference Include="..\FlowBoard.Column\FlowBoard.Column.csproj" />
+    <ProjectReference Include="..\FlowBoard.Task\FlowBoard.Task.csproj" />
+    <ProjectReference Include="..\FlowBoard.Comment\FlowBoard.Comment.csproj" />
+    <ProjectReference Include="..\FlowBoard.Checklist\FlowBoard.Checklist.csproj" />
+    <ProjectReference Include="..\FlowBoard.Notification\FlowBoard.Notification.csproj" />
+  </ItemGroup>
+
+</Project>

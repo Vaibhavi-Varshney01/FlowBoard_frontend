@@ -1,0 +1,6 @@
+@FlowBoard.Column_HostAddress = http://localhost:5064
+
+GET {{FlowBoard.Column_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

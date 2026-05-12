@@ -1,0 +1,6 @@
+@FlowBoard.Task_HostAddress = http://localhost:5246
+
+GET {{FlowBoard.Task_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

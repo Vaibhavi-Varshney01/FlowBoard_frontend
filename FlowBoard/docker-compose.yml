@@ -1,0 +1,133 @@
+
+services:
+  flowboard-gateway:
+    build: ./FlowBoard.Gateway
+    ports:
+      - "5050:8080"
+    volumes:
+      - ./FlowBoard.Gateway/appsettings.json:/app/appsettings.json
+    depends_on:
+      - flowboard-auth
+      - flowboard-workspace
+      - flowboard-board
+      - flowboard-column
+      - flowboard-task
+      - flowboard-notification
+    restart: always
+
+
+  flowboard-web:
+    build: ./FlowBoard.Web
+    ports:
+      - "8081:8080"
+    restart: always
+
+
+  flowboard-auth:
+    build: ./FlowBoard.Auth
+    ports:
+      - "5001:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_auth;Username=postgres;Password=password
+    depends_on:
+      - postgres
+    restart: always
+
+
+  flowboard-board:
+    build: ./FlowBoard.Board
+    ports:
+      - "5002:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_board;Username=postgres;Password=password
+    depends_on:
+      - postgres
+    restart: always
+
+
+  flowboard-notification:
+    build: ./FlowBoard.Notification
+    ports:
+      - "5003:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_notification;Username=postgres;Password=password
+      - RabbitMQ__Host=rabbitmq
+      - Services__TaskService=http://flowboard-task:8080/
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: always
+
+
+  flowboard-workspace:
+    build: ./FlowBoard.Workspace
+    ports:
+      - "5004:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_workspace;Username=postgres;Password=password
+    depends_on:
+      - postgres
+    restart: always
+
+
+  flowboard-column:
+    build: ./FlowBoard.Column
+    ports:
+      - "5005:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_column;Username=postgres;Password=password
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: always
+
+
+  flowboard-task:
+    build: ./FlowBoard.Task
+    ports:
+      - "5006:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_task;Username=postgres;Password=password
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: always
+
+
+  flowboard-comment:
+    build: ./FlowBoard.Comment
+    ports:
+      - "5007:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_comment;Username=postgres;Password=password
+    depends_on:
+      - postgres
+    restart: always
+
+
+  flowboard-checklist:
+    build: ./FlowBoard.Checklist
+    ports:
+      - "5008:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=flowboard_checklist;Username=postgres;Password=password
+    depends_on:
+      - postgres
+    restart: always
+
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
