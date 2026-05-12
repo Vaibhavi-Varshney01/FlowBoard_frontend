@@ -1,0 +1,144 @@
+services:
+  # ─── FRONTEND (Vite Static Site) ───
+  - type: web
+    name: flowboard-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    publishPath: ./FlowBoard-Frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          name: flowboard-gateway
+          type: web
+          property: url
+        suffix: /api
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false # Set manually in Render Dashboard
+
+  # ─── API GATEWAY (Public Facing) ───
+  - type: web
+    name: flowboard-gateway
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Gateway/Dockerfile
+    plan: starter
+    envVars:
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:10000
+      - key: PORT
+        value: 10000
+
+  # ─── AUTH SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-auth
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Auth/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+
+  # ─── WORKSPACE SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-workspace
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Workspace/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+
+  # ─── BOARD SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-board
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Board/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+
+  # ─── COLUMN SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-column
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Column/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+      - key: RabbitMQ__Host
+        value: rabbitmq
+
+  # ─── TASK SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-task
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Task/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+      - key: RabbitMQ__Host
+        value: rabbitmq
+
+  # ─── COMMENT SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-comment
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Comment/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+
+  # ─── CHECKLIST SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-checklist
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Checklist/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+
+  # ─── NOTIFICATION SERVICE (Private) ───
+  - type: pservice
+    name: flowboard-notification
+    runtime: docker
+    dockerContext: ./FlowBoard
+    dockerfilePath: ./FlowBoard.Notification/Dockerfile
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: flowboard-db
+          property: connectionString
+      - key: RabbitMQ__Host
+        value: rabbitmq
+
+  # ─── RABBITMQ (Private Infrastructure) ───
+  - type: pservice
+    name: rabbitmq
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./FlowBoard/Infrastructure/RabbitMQ.Dockerfile
+
+databases:
+  - name: flowboard-db
+    databaseName: flowboard
+    user: flowboard_user
+    plan: free
