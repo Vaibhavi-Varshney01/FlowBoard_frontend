@@ -29,7 +29,7 @@ services:
         value: 10000
 
   # ─── AUTH SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-auth
     runtime: docker
     dockerContext: ./FlowBoard
@@ -41,7 +41,7 @@ services:
           property: connectionString
 
   # ─── WORKSPACE SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-workspace
     runtime: docker
     dockerContext: ./FlowBoard
@@ -53,7 +53,7 @@ services:
           property: connectionString
 
   # ─── BOARD SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-board
     runtime: docker
     dockerContext: ./FlowBoard
@@ -65,7 +65,7 @@ services:
           property: connectionString
 
   # ─── COLUMN SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-column
     runtime: docker
     dockerContext: ./FlowBoard
@@ -79,7 +79,7 @@ services:
         value: rabbitmq
 
   # ─── TASK SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-task
     runtime: docker
     dockerContext: ./FlowBoard
@@ -93,7 +93,7 @@ services:
         value: rabbitmq
 
   # ─── COMMENT SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-comment
     runtime: docker
     dockerContext: ./FlowBoard
@@ -105,7 +105,7 @@ services:
           property: connectionString
 
   # ─── CHECKLIST SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-checklist
     runtime: docker
     dockerContext: ./FlowBoard
@@ -117,7 +117,7 @@ services:
           property: connectionString
 
   # ─── NOTIFICATION SERVICE (Private) ───
-  - type: pservice
+  - type: pserv
     name: flowboard-notification
     runtime: docker
     dockerContext: ./FlowBoard
@@ -131,7 +131,7 @@ services:
         value: rabbitmq
 
   # ─── RABBITMQ (Private Infrastructure) ───
-  - type: pservice
+  - type: pserv
     name: rabbitmq
     runtime: docker
     dockerContext: .
