@@ -1,7 +1,8 @@
 services:
   # ─── FRONTEND (Vite Static Site) ───
-  - type: static
+  - type: web
     name: flowboard-frontend
+    runtime: static
     rootDir: FlowBoard-Frontend
     buildCommand: npm install && npm run build
     publishPath: dist
@@ -10,7 +11,7 @@ services:
         fromService:
           name: flowboard-gateway
           type: web
-        property: url
+          property: url
       - key: VITE_CLERK_PUBLISHABLE_KEY
         # Set manually in Render Dashboard as a secret
 
