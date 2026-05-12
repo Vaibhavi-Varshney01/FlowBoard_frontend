@@ -21,7 +21,7 @@ services:
     name: flowboard-gateway
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Gateway/Dockerfile
+    dockerfilePath: FlowBoard.Gateway/Dockerfile
     plan: starter
     envVars:
       - key: ASPNETCORE_URLS
@@ -34,7 +34,7 @@ services:
     name: flowboard-auth
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Auth/Dockerfile
+    dockerfilePath: FlowBoard.Auth/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -46,7 +46,7 @@ services:
     name: flowboard-workspace
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Workspace/Dockerfile
+    dockerfilePath: FlowBoard.Workspace/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -58,7 +58,7 @@ services:
     name: flowboard-board
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Board/Dockerfile
+    dockerfilePath: FlowBoard.Board/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -70,7 +70,7 @@ services:
     name: flowboard-column
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Column/Dockerfile
+    dockerfilePath: FlowBoard.Column/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -84,7 +84,7 @@ services:
     name: flowboard-task
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Task/Dockerfile
+    dockerfilePath: FlowBoard.Task/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -98,7 +98,7 @@ services:
     name: flowboard-comment
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Comment/Dockerfile
+    dockerfilePath: FlowBoard.Comment/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -110,7 +110,7 @@ services:
     name: flowboard-checklist
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Checklist/Dockerfile
+    dockerfilePath: FlowBoard.Checklist/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -122,7 +122,7 @@ services:
     name: flowboard-notification
     runtime: docker
     dockerContext: ./FlowBoard
-    dockerfilePath: ./FlowBoard.Notification/Dockerfile
+    dockerfilePath: FlowBoard.Notification/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -141,5 +141,4 @@ services:
 databases:
   - name: flowboard-db
     databaseName: flowboard
-    user: flowboard_user
     plan: free
