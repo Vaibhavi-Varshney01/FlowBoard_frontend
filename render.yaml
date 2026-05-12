@@ -14,7 +14,7 @@ services:
           property: url
         suffix: /api
       - key: VITE_CLERK_PUBLISHABLE_KEY
-        sync: false # Set manually in Render Dashboard
+        # Set manually in Render Dashboard as a secret
 
   # ─── API GATEWAY (Public Facing) ───
   - type: web
@@ -136,7 +136,7 @@ services:
     name: rabbitmq
     runtime: docker
     dockerContext: .
-    dockerfilePath: ./FlowBoard/Infrastructure/RabbitMQ.Dockerfile
+    dockerfilePath: FlowBoard/Infrastructure/RabbitMQ.Dockerfile
 
 databases:
   - name: flowboard-db
