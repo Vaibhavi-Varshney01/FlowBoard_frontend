@@ -17,6 +17,12 @@
           event.preventDefault();
         }
       });
+      window.addEventListener('error', (event) => {
+        if (event.message?.includes('play()') || event.message?.includes('pause()')) {
+          event.stopImmediatePropagation();
+          event.preventDefault();
+        }
+      }, true);
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
