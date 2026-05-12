@@ -1,8 +1,7 @@
 services:
   # ─── FRONTEND (Vite Static Site) ───
-  - type: web
+  - type: static
     name: flowboard-frontend
-    runtime: static
     rootDir: FlowBoard-Frontend
     buildCommand: npm install && npm run build
     publishPath: dist
