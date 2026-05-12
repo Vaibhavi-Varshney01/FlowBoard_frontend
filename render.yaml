@@ -11,8 +11,7 @@ services:
         fromService:
           name: flowboard-gateway
           type: web
-          property: url
-        suffix: /api
+        property: url
       - key: VITE_CLERK_PUBLISHABLE_KEY
         # Set manually in Render Dashboard as a secret
 
