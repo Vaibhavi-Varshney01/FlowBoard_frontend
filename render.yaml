@@ -3,8 +3,8 @@ services:
   - type: web
     name: flowboard-gateway
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Gateway/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Gateway
+    dockerfilePath: FlowBoard/FlowBoard.Gateway/Dockerfile
     plan: starter
     envVars:
       - key: ASPNETCORE_URLS
@@ -16,8 +16,8 @@ services:
   - type: pserv
     name: flowboard-auth
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Auth/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Auth
+    dockerfilePath: FlowBoard/FlowBoard.Auth/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -28,8 +28,8 @@ services:
   - type: pserv
     name: flowboard-workspace
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Workspace/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Workspace
+    dockerfilePath: FlowBoard/FlowBoard.Workspace/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -40,8 +40,8 @@ services:
   - type: pserv
     name: flowboard-board
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Board/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Board
+    dockerfilePath: FlowBoard/FlowBoard.Board/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -52,8 +52,8 @@ services:
   - type: pserv
     name: flowboard-column
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Column/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Column
+    dockerfilePath: FlowBoard/FlowBoard.Column/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -66,8 +66,8 @@ services:
   - type: pserv
     name: flowboard-task
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Task/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Task
+    dockerfilePath: FlowBoard/FlowBoard.Task/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -80,8 +80,8 @@ services:
   - type: pserv
     name: flowboard-comment
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Comment/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Comment
+    dockerfilePath: FlowBoard/FlowBoard.Comment/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -92,8 +92,8 @@ services:
   - type: pserv
     name: flowboard-checklist
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Checklist/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Checklist
+    dockerfilePath: FlowBoard/FlowBoard.Checklist/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -104,8 +104,8 @@ services:
   - type: pserv
     name: flowboard-notification
     runtime: docker
-    dockerContext: ./FlowBoard
-    dockerfilePath: FlowBoard.Notification/Dockerfile
+    dockerContext: ./FlowBoard/FlowBoard.Notification
+    dockerfilePath: FlowBoard/FlowBoard.Notification/Dockerfile
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
@@ -118,7 +118,7 @@ services:
   - type: pserv
     name: rabbitmq
     runtime: docker
-    dockerContext: .
+    dockerContext: ./FlowBoard/Infrastructure
     dockerfilePath: FlowBoard/Infrastructure/RabbitMQ.Dockerfile
 
 databases:
